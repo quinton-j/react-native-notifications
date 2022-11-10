@@ -15,14 +15,16 @@
 
         <!-- Dispatched by the GcmReceiver when messages are received. -->
         <service
-            android:name="com.wix.reactnativenotifications.fcm.FcmMessageHandlerService">
+            android:name="com.wix.reactnativenotifications.fcm.FcmMessageHandlerService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <!-- Dispatched by the GcmReceiver. Starts the designated refresh-handling service. -->
         <service
-            android:name=".fcm.FcmInstanceIdListenerService">
+            android:name=".fcm.FcmInstanceIdListenerService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
