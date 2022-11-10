@@ -26,6 +26,8 @@ public class FcmMessageHandlerService extends FirebaseMessagingService {
         if(isScreenOn==false){
             WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
             wl.acquire(10000);
+            WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
+            wl_cpu.acquire(10000);
         }
     }
 }
