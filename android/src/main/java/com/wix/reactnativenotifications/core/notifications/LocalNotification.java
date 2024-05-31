@@ -126,7 +126,7 @@ public class LocalNotification implements ILocalNotification {
     protected PendingIntent createOnOpenedIntent(int id) {
         final Intent serviceIntent = new Intent(mContext, LocalNotificationService.class);
         serviceIntent.putExtra(LocalNotificationService.EXTRA_NOTIFICATION, mNotificationProps.asBundle());
-        return PendingIntent.getService(mContext, id, serviceIntent, PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(mContext, id, serviceIntent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
