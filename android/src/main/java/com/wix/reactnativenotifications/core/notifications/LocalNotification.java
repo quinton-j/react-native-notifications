@@ -2,6 +2,7 @@ package com.wix.reactnativenotifications.core.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -125,11 +126,14 @@ public class LocalNotification implements ILocalNotification {
     protected PendingIntent createOnOpenedIntent(int id) {
         final Intent serviceIntent = new Intent(mContext, LocalNotificationService.class);
         serviceIntent.putExtra(LocalNotificationService.EXTRA_NOTIFICATION, mNotificationProps.asBundle());
-        return PendingIntent.getService(mContext, id, serviceIntent, PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(mContext, id, serviceIntent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
         final Integer icon = mNotificationProps.getIcon();
+
+        String CHANNEL_ID = "notification_channel_01";
+        String CHANNEL_NAME = "notification channel 01";
 
         final Notification.Builder builder = new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
@@ -152,6 +156,15 @@ public class LocalNotification implements ILocalNotification {
 
         if (lightsColor != null && lightsOnMs != null && lightsOffMs != null) {
             builder.setLights(lightsColor, lightsOnMs, lightsOffMs);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                                                                  CHANNEL_NAME,
+                                                                  NotificationManager.IMPORTANCE_DEFAULT);
+            final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+            builder.setChannelId(CHANNEL_ID);
         }
 
         return builder;

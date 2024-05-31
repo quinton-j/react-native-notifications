@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.0"
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
     }
@@ -20,11 +20,11 @@ android {
 
 dependencies {
     // Google's GCM.
-    compile "com.google.firebase:firebase-messaging:10.2.6"
+    implementation 'com.google.firebase:firebase-messaging:24.0.0'
 
-    compile 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.react:react-native:+'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.+'
-    testCompile 'org.robolectric:robolectric:3.1.4'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.+'
+    testImplementation 'org.robolectric:robolectric:3.1.4'
 }

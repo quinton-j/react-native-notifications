@@ -1,6 +1,7 @@
 package com.wix.reactnativenotifications.core.notifications;
 
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 public interface ILocalNotification {
 

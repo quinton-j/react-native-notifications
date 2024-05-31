@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -27,6 +26,8 @@ import com.wix.reactnativenotifications.core.notifications.NotificationProps;
 import com.wix.reactnativenotifications.fcm.FcmTokenService;
 
 import static com.wix.reactnativenotifications.Defs.LOGTAG;
+
+import androidx.annotation.Nullable;
 
 public class RNNotificationsModule extends ReactContextBaseJavaModule implements AppLifecycleFacade.AppVisibilityListener, Application.ActivityLifecycleCallbacks {
 
