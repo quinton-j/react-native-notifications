@@ -22,13 +22,13 @@
             </intent-filter>
         </service>
         <!-- Dispatched by the GcmReceiver. Starts the designated refresh-handling service. -->
-        <service
-            android:name=".fcm.FcmInstanceIdListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name=".fcm.FcmInstanceIdListenerService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
         <service
             android:name=".fcm.FcmTokenService"
             android:exported="false" />
