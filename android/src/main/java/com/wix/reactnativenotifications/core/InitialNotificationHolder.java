@@ -1,6 +1,7 @@
 package com.wix.reactnativenotifications.core;
 
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.wix.reactnativenotifications.core.notifications.NotificationProps;
 
