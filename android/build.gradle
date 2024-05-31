@@ -20,11 +20,11 @@ android {
 
 dependencies {
     // Google's GCM.
-    compile 'com.google.firebase:firebase-messaging:24.0.0'
+    implementation 'com.google.firebase:firebase-messaging:24.0.0'
 
-    compile 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.react:react-native:+'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.+'
-    testCompile 'org.robolectric:robolectric:3.1.4'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.+'
+    testImplementation 'org.robolectric:robolectric:3.1.4'
 }

@@ -1,7 +1,8 @@
 package com.wix.reactnativenotifications.core.notificationdrawer;
 
 import android.app.Activity;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 public interface INotificationDrawer {
     void onAppInit();
