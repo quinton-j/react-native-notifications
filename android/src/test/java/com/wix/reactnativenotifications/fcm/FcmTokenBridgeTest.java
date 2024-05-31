@@ -3,7 +3,6 @@ package com.wix.reactnativenotifications.fcm;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.wix.reactnativenotifications.core.JsIOHelper;
 
 import org.junit.Before;
@@ -27,7 +26,6 @@ public class FcmTokenBridgeTest {
     @Mock private Context mContext;
 
     @Mock private Bundle mDefaultBundle;
-    @Mock private FirebaseInstanceId mFirebaseInstanceId;
     @Mock private JsIOHelper mJsIOHelper;
 
     @Before
@@ -60,11 +58,10 @@ public class FcmTokenBridgeTest {
 
         // Assert
 
-        verify(mFirebaseInstanceId).deleteInstanceId();
         verify(mJsIOHelper).sendEventToJS(eq(TOKEN_RECEIVED_EVENT_NAME), eq(mDefaultBundle));
     }
 
     protected FcmTokenBridge createUUT() {
-        return new FcmTokenBridge(mFirebaseInstanceId, mJsIOHelper);
+        return new FcmTokenBridge(mJsIOHelper);
     }
 }

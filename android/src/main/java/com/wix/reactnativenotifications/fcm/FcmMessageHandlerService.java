@@ -11,6 +11,9 @@ import com.wix.reactnativenotifications.core.notifications.NotificationProps;
 import com.wix.reactnativenotifications.core.notifications.RemoteNotification;
 
 import static com.wix.reactnativenotifications.Defs.LOGTAG;
+import static com.wix.reactnativenotifications.Defs.TOKEN_RECEIVED_EVENT_NAME;
+
+import androidx.annotation.NonNull;
 
 public class FcmMessageHandlerService extends FirebaseMessagingService {
 
@@ -30,4 +33,5 @@ public class FcmMessageHandlerService extends FirebaseMessagingService {
             wl_cpu.acquire(10000);
         }
     }
+
 }
