@@ -9,7 +9,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-import {NotificationsAndroid, PendingNotifications} from 'react-native-notifications';
+import {NotificationsAndroid} from 'react-native-notifications';
 
 let mainScreen;
 
@@ -88,7 +88,7 @@ class MainComponent extends Component {
 
   componentDidMount() {
     console.log('ReactScreen', 'componentDidMount');
-    PendingNotifications.getInitialNotification()
+    NotificationsAndroid.getInitialNotification()
       .then((notification) => {console.log("getInitialNotification:", notification); this.setState({initialNotification: (notification ? notification.getData() : undefined)});})
       .catch((err) => console.error("getInitialNotifiation failed", err));
   }
@@ -117,7 +117,7 @@ class MainComponent extends Component {
       <View style={styles.container}>
         <Text style={styles.titleText}>Wix React Native Notifications</Text>
         <Text style={styles.bodyText}>{this.state.initialNotification ? 'Opened from notification' : ''}</Text>
-        <Text style={styles.bodyText}>Last notification: {this.state.lastNotification ? '\n'+this.state.lastNotification.body + ` (opened at ''${this.state.notificationRxTime})` : "N/A"}</Text>
+        <Text style={styles.bodyText}>Last notification: {this.state.lastNotification ? '\n'+this.state.lastNotification.getBody() + ` (opened at ''${this.state.notificationRxTime})` : "N/A"}</Text>
         <Text style={styles.bodyText}>Time elapsed: {this.state.elapsed}</Text>
         <Text>{"\n\n"}</Text>
         <TouchableHighlight onPress={() => this.onPostNotification()}>

@@ -7,9 +7,13 @@ let notificationReceivedListener;
 let notificationOpenedListener;
 let registrationTokenUpdateListener;
 
+export const EVENT_OPENED = "com.wix.reactnativenotifications.notificationOpened";
+export const EVENT_RECEIVED = "com.wix.reactnativenotifications.notificationReceived";
+export const EVENT_REGISTERED = "com.wix.reactnativenotifications.remoteNotificationsRegistered";
+
 export class NotificationsAndroid {
   static setNotificationOpenedListener(listener) {
-    notificationOpenedListener = DeviceEventEmitter.addListener("notificationOpened", (notification) => listener(new NotificationAndroid(notification)));
+    notificationOpenedListener = DeviceEventEmitter.addListener(EVENT_OPENED, (notification) => listener(new NotificationAndroid(notification)));
   }
 
   static clearNotificationOpenedListener() {
@@ -20,7 +24,7 @@ export class NotificationsAndroid {
   }
 
   static setNotificationReceivedListener(listener) {
-    notificationReceivedListener = DeviceEventEmitter.addListener("notificationReceived", (notification) => listener(new NotificationAndroid(notification)));
+    notificationReceivedListener = DeviceEventEmitter.addListener(EVENT_RECEIVED, (notification) => listener(new NotificationAndroid(notification)));
   }
 
   static clearNotificationReceivedListener() {
@@ -31,7 +35,8 @@ export class NotificationsAndroid {
   }
 
   static setRegistrationTokenUpdateListener(listener) {
-    registrationTokenUpdateListener = DeviceEventEmitter.addListener("remoteNotificationsRegistered", listener);
+    NotificationsAndroid.clearRegistrationTokenUpdateListener();
+    registrationTokenUpdateListener = DeviceEventEmitter.addListener(EVENT_REGISTERED, listener);
   }
 
   static clearRegistrationTokenUpdateListener() {
@@ -49,22 +54,37 @@ export class NotificationsAndroid {
     RNNotifications.refreshToken();
   }
 
-  static localNotification(notification: Object) {
-    const id = Math.random() * 100000000 | 0; // Bitwise-OR forces value onto a 32bit limit
-    RNNotifications.postLocalNotification(notification, id);
+  static invalidateToken() {
+    RNNotifications.invalidateToken();
+  }
+
+  static localNotification(notification, id) {
+    const notificationProperties = notification instanceof NotificationAndroid ? notification.properties : notification;
+
+    if (!id && id !== 0) {
+      id = notificationProperties.tag ? 0 : Math.random() * 100000000 | 0; // Bitwise-OR forces value onto a 32bit limit
+    }
+
+    RNNotifications.postLocalNotification(notificationProperties, id);
     return id;
   }
 
-  static cancelLocalNotification(id) {
-    RNNotifications.cancelLocalNotification(id);
+  static cancelLocalNotification(id, tag) {
+    RNNotifications.cancelLocalNotification(id, tag);
   }
-}
 
-export class PendingNotifications {
+  static cancelAllLocalNotifications() {
+    RNNotifications.cancelAllLocalNotifications();
+  }
+
   static getInitialNotification() {
     return RNNotifications.getInitialNotification()
       .then((rawNotification) => {
         return rawNotification ? new NotificationAndroid(rawNotification) : undefined;
       });
+  }
+
+  static consumeBackgroundQueue() {
+    RNNotifications.consumeBackgroundQueue();
   }
 }

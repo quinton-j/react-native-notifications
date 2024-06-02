@@ -3,12 +3,14 @@ package com.wix.reactnativenotifications.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+
+import com.wix.reactnativenotifications.core.notifications.IntentExtras;
+import com.wix.reactnativenotifications.core.notifications.NotificationProps;
 
 public class AppLaunchHelper {
     private static final String TAG = AppLaunchHelper.class.getSimpleName();
-
-    private static final String LAUNCH_FLAG_KEY_NAME = "launchedFromNotification";
 
     public Intent getLaunchIntent(Context appContext) {
         try {
@@ -22,8 +24,16 @@ public class AppLaunchHelper {
             // flags) as they do.
             final Intent helperIntent = appContext.getPackageManager().getLaunchIntentForPackage(appContext.getPackageName());
             final Intent intent = new Intent(appContext, Class.forName(helperIntent.getComponent().getClassName()));
+            final NotificationProps notification = InitialNotificationHolder.getInstance().get();
+
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            intent.putExtra(LAUNCH_FLAG_KEY_NAME, true);
+            intent.putExtra(IntentExtras.FCM_PREFIX, true);
+            if (notification != null) {
+                // If an initial notification has been set from a cold boot, we must pass on
+                // the notification to ensure it is accessible from subsequent getInitialNotification calls
+                intent.putExtras(notification.asBundle());
+            }
+
             return intent;
         } catch (ClassNotFoundException e) {
             // Note: this is an imaginary scenario cause we're asking for a class of our very own package.
@@ -40,6 +50,25 @@ public class AppLaunchHelper {
     }
 
     public boolean isLaunchIntentOfNotification(Intent intent) {
-        return intent.getBooleanExtra(LAUNCH_FLAG_KEY_NAME, false);
+        return intent.getBooleanExtra(IntentExtras.LAUNCH_FLAG, false);
+    }
+
+    public boolean isLaunchIntentOfBackgroundPushNotification(Intent intent) {
+        final Bundle extras = intent.getExtras();
+
+        if (extras != null) {
+            // We don't look for FCM_FROM as "from" is far too generic and may appear in other launch intents.
+            if (extras.containsKey(IntentExtras.FCM_COLLAPSE_KEY)) {
+                return true;
+            }
+
+            for (final String key : extras.keySet()) {
+                if (key.startsWith(IntentExtras.FCM_PREFIX)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
